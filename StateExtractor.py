@@ -13,12 +13,19 @@ class StateExtractor:
         self.__n_block_rows = 12
         self.__n_block_cols = 6
 
+    def extract_cursor_corner_position(self, image) -> ndarray:
+        color_sum_image = np.sum(image, axis=2)
+        cursor_position = np.zeros((1, 1))
+        cursor_position[0] = np.argmax(color_sum_image)
+        return cursor_position
+
     def extract_board_state_key_points(self, image) -> ndarray:
-        key_points = np.zeros((self.__n_block_rows, self.__n_block_cols))
+        key_points = np.zeros((self.__n_block_rows * self.__n_block_cols, 1))
 
         for row in range(self.__n_block_rows):
             for col in range(self.__n_block_cols):
-                key_points[row, col] = self.__get_block_value_of_key_point(image, row, col)
+                idx = (row * self.__n_block_cols) + col
+                key_points[idx] = self.__get_block_value_of_key_point(image, row, col)
 
         return key_points
 

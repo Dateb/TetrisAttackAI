@@ -1,6 +1,4 @@
-import PIL
 import numpy as np
-from PIL import Image
 from rl.core import Processor
 
 
@@ -8,6 +6,7 @@ from rl.core import Processor
 #    action = self.processor.process_action(action)
 from StateExtractor import StateExtractor
 
+import timeit
 
 class TetrisAttackProcessor(Processor):
 
@@ -20,13 +19,21 @@ class TetrisAttackProcessor(Processor):
         img_arr = observation
         img_arr = img_arr[22:215, 88:185]
 
-        key_points = self.__state_extractor.extract_board_state_key_points(img_arr)
-        print(key_points)
+        start = timeit.default_timer()
+        cursor_corner_position = self.__state_extractor.extract_cursor_corner_position(img_arr)
+        stop = timeit.default_timer()
 
-        im = Image.fromarray(img_arr)
-        #im = im.resize((80, 80))
-        im.save("example.jpeg")
-        return np.asarray(PIL.Image.open("example.jpeg"))
+        #print('Time(cursor): ', stop - start)
+
+        start = timeit.default_timer()
+        key_points = self.__state_extractor.extract_board_state_key_points(img_arr)
+        stop = timeit.default_timer()
+
+        #print('Time(blocks): ', stop - start)
+
+        features = np.concatenate((cursor_corner_position, key_points))
+
+        return features
 
     def process_action(self, action):
         actions = np.zeros(self.__n_actions)

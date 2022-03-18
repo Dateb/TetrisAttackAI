@@ -8,22 +8,20 @@ from rl.policy import LinearAnnealedPolicy, EpsGreedyQPolicy
 from TetrisAttackEnv import TetrisAttackEnv
 from TetrisAttackProcessor import TetrisAttackProcessor
 
-WINDOW_LENGTH = 20
+WINDOW_LENGTH = 4
 
 
 def build_model(env):
     n_actions = env.action_space.shape[0]
     model = Sequential()
 
-    model.add(Permute((4, 2, 3, 1), input_shape=(WINDOW_LENGTH, 80, 80, 3)))
-    model.add(Convolution2D(32, (8, 8), strides=(4, 4)))
+    model.add(Permute((2, 3, 1),  input_shape=(WINDOW_LENGTH, 73, 1)))
+    model.add(Dense(64))
     model.add(Activation('relu'))
-    model.add(Convolution2D(64, (4, 4), strides=(2, 2)))
-    model.add(Activation('relu'))
-    model.add(Convolution2D(64, (3, 3), strides=(1, 1)))
+    model.add(Dense(32))
     model.add(Activation('relu'))
     model.add(Flatten())
-    model.add(Dense(512))
+    model.add(Dense(32))
     model.add(Activation('relu'))
     model.add(Dense(n_actions))
     model.add(Activation('linear'))
