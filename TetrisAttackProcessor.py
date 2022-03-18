@@ -1,19 +1,17 @@
 import numpy as np
 from rl.core import Processor
-
-
-#if self.processor is not None:
-#    action = self.processor.process_action(action)
 from StateExtractor import StateExtractor
 
 import timeit
 
+
 class TetrisAttackProcessor(Processor):
 
-    def __init__(self, n_actions: int):
+    def __init__(self):
         super(TetrisAttackProcessor, self).__init__()
-        self.__n_actions = n_actions
         self.__state_extractor = StateExtractor()
+        self.__current_speed = 1.0
+        self.__n_actions = 0
 
     def process_observation(self, observation):
         img_arr = observation
@@ -31,7 +29,9 @@ class TetrisAttackProcessor(Processor):
 
         #print('Time(blocks): ', stop - start)
 
-        features = np.concatenate((cursor_corner_position, key_points))
+        speed_arr = np.zeros((1, 1))
+        speed_arr[0] = self.__current_speed
+        features = np.concatenate((cursor_corner_position, key_points, speed_arr))
 
         return features
 
@@ -39,3 +39,9 @@ class TetrisAttackProcessor(Processor):
         actions = np.zeros(self.__n_actions)
         actions[action] = 1
         return actions
+
+    def set_current_speed(self, speed: float):
+        self.__current_speed = speed
+
+    def set_n_actions(self, n_actions: int):
+        self.__n_actions = n_actions
