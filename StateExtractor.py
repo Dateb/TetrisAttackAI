@@ -1,6 +1,16 @@
+from dataclasses import dataclass
+from typing import List
+
 import numpy as np
 from PIL import Image
 from numpy import ndarray
+
+
+@dataclass
+class KeyPoint:
+
+    x_coord: int
+    y_coord: int
 
 
 class StateExtractor:
@@ -11,28 +21,36 @@ class StateExtractor:
         self.__n_block_cols = 6
 
     def extract_cursor_corner_position(self, image) -> ndarray:
-        color_sum_image = np.sum(image, axis=2)
         cursor_position = np.zeros((1, 1))
-        cursor_position[0] = np.argmax(color_sum_image)
+        cursor_position[0] = np.argmax(image)
         return cursor_position
 
-    def extract_board_state_key_points(self, image_arr) -> ndarray:
-        key_points = np.zeros((self.__n_block_rows * self.__n_block_cols, 1))
+    def extract_pixel_distances_to_top(self, image_arr) -> ndarray:
+        pixel_distances = np.zeros((6, 1))
+        for col in range(self.__n_block_cols):
+            x_coord = 2 * col * self.__block_pixel_radius + self.__block_pixel_radius
+            pixels_of_col = image_arr[:, x_coord]
+            print(pixels_of_col)
 
-        image = Image.fromarray(image_arr)
-        image_hsv = image.convert("HSV")
-        image_arr = np.asarray(image_hsv)
+    def extract_key_point_values(self, image_arr) -> ndarray:
+        key_point_values = np.zeros((self.__n_block_rows * self.__n_block_cols, 1))
 
+        for i, key_point in enumerate(self.extract_key_points()):
+            key_point_values[i] = image_arr[key_point.y_coord, key_point.x_coord]
+
+        return key_point_values
+
+    def extract_key_points(self) -> List[KeyPoint]:
+        key_points = []
         for row in range(self.__n_block_rows):
             for col in range(self.__n_block_cols):
-                idx = (row * self.__n_block_cols) + col
-                key_points[idx] = self.__get_block_value_of_key_point(image_arr, row, col)
+                key_points.append(self.__get_key_point(row, col))
 
         return key_points
 
-    def __get_block_value_of_key_point(self, image_arr, row: int, col: int):
+    def __get_key_point(self, row: int, col: int):
         x_coord = 2 * col * self.__block_pixel_radius + self.__block_pixel_radius
         y_coord = 2 * row * self.__block_pixel_radius + self.__block_pixel_radius
 
-        return image_arr[y_coord, x_coord][0]
+        return KeyPoint(x_coord, y_coord)
 

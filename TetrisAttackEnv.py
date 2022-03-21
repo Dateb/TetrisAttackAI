@@ -15,9 +15,9 @@ class TetrisAttackEnv:
 
     def step(self, action):
         obs, rew, done, info = self.__env.step(action)
-        self.__processor.set_current_speed(info["speed"])
-        if done:
-            rew = -100
+        speed = info["speed"]
+
+        self.__processor.set_current_speed(speed)
         return obs, rew, done, info
 
     def reset(self):
