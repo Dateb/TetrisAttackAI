@@ -6,17 +6,22 @@ from rl.memory import SequentialMemory
 from rl.policy import LinearAnnealedPolicy, EpsGreedyQPolicy
 
 from TetrisAttackEnv import TetrisAttackEnv
-from TetrisAttackProcessor import TetrisAttackProcessor
 
-WINDOW_LENGTH = 4
+WINDOW_LENGTH = 128
 
 
 def build_model(env):
     model = Sequential()
     n_actions = env.action_space.shape[0]
 
-    model.add(Permute((2, 3, 1),  input_shape=(WINDOW_LENGTH, 74, 1)))
+    model.add(Permute((2, 3, 1),  input_shape=(WINDOW_LENGTH, 75, 1)))
     model.add(Flatten())
+    model.add(Dense(1024))
+    model.add(Activation('relu'))
+    model.add(Dense(1024))
+    model.add(Activation('relu'))
+    model.add(Dense(1024))
+    model.add(Activation('relu'))
     model.add(Dense(1024))
     model.add(Activation('relu'))
     model.add(Dense(512))
@@ -31,10 +36,10 @@ def build_model(env):
 
     memory = SequentialMemory(limit=1000000, window_length=WINDOW_LENGTH)
 
-    policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=0.8, value_min=0.05, value_test=.05,
-                                  nb_steps=500000)
+    policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=0.8, value_min=0.1, value_test=.05,
+                                  nb_steps=100000)
 
-    dqn = DQNAgent(model=model, nb_actions=n_actions, policy=policy, memory=memory, processor=env.processor,
+    dqn = DQNAgent(model=model, nb_actions=n_actions, policy=policy, memory=memory,
                    nb_steps_warmup=20000, gamma=.9999, target_model_update=10000,
                    train_interval=4, delta_clip=1.)
     dqn.compile(Adam(lr=1e-3), metrics=['mae'])
@@ -43,8 +48,7 @@ def build_model(env):
 
 
 def build_environment():
-    processor = TetrisAttackProcessor()
-    return TetrisAttackEnv(processor)
+    return TetrisAttackEnv()
 
 
 def main():
