@@ -4,7 +4,7 @@ from rl.callbacks import ModelIntervalCheckpoint
 
 
 def is_already_trained(name: str):
-    return os.path.exists(f"models/{name}.h5f")
+    return os.path.exists(f"models/{name}.h5f.index")
 
 
 def load_weights(dqn, name):
