@@ -1,14 +1,17 @@
+import timeit
+
 import numpy as np
 import retro
 
 from Board.BoardConfiguration import BoardConfiguration
 from Board.BoardImage import BoardImage
-from Board.CursorLocation.Cursor import Cursor
+from Board.CursorLocation.CursorLocator import CursorLocator
 
 
 class TetrisAttackEnv:
 
     def __init__(self):
+        self.__cursor_locator = CursorLocator()
         self.__total_cursors = 0
         self.__failed_cursors = 0
         game = 'TetrisAttack-Snes'
@@ -25,8 +28,11 @@ class TetrisAttackEnv:
         if done:
             rew = 0
 
+        start = timeit.default_timer()
         board_image = BoardImage(game_image)
-        board_configuration = BoardConfiguration(board_image)
+        board_configuration = BoardConfiguration(board_image, self.__cursor_locator)
+        stop = timeit.default_timer()
+        print(f"Time to create obs:{stop - start}")
 
         return board_configuration.array, rew, done, info
 
@@ -38,7 +44,7 @@ class TetrisAttackEnv:
 
     def reset(self):
         game_image = self.__env.reset()
-        return BoardConfiguration(BoardImage(game_image)).array
+        return BoardConfiguration(BoardImage(game_image), self.__cursor_locator).array
 
     def render(self, mode: str = "human", close: bool = "False"):
         return 0

@@ -10,7 +10,7 @@ from ValueNetwork import ValueNetwork
 class EndlessModeAgent:
 
     DISCOUNT_FACTOR = .99
-    N_WARMUP_STEPS = 50000
+    N_WARMUP_STEPS = 100
     N_STEPS_UNTIL_TARGET_UPDATE = 500
     WINDOW_LENGTH = 4
     MEMORY_LIMIT = 1000000

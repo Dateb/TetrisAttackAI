@@ -16,7 +16,7 @@ class BoardConfiguration:
     BLOCKS_SIZE: int = BLOCKS_PER_ROW * BLOCKS_PER_COLUMN * (N_BLOCK_TYPES + 1)
     TOTAL_SIZE: int = CURSOR_SIZE + BLOCKS_SIZE
 
-    def __init__(self, board_image: BoardImage):
+    def __init__(self, board_image: BoardImage, cursor_locator: CursorLocator):
         self.__board_image = board_image
 
         self.__block_pixels = [
@@ -27,7 +27,7 @@ class BoardConfiguration:
         self.__blocks = [Block(pixel) for pixel in self.__block_pixels]
         self.__blocks_array = np.concatenate([block.array for block in self.__blocks])
 
-        cursor_x_coordinate, cursor_y_coordinate = CursorLocator().get_coordinates(board_image.array)
+        cursor_x_coordinate, cursor_y_coordinate = cursor_locator.get_coordinates(board_image.array)
         self.__map_cursor_coordinates(cursor_x_coordinate, cursor_y_coordinate)
         
         self.__configuration_array = np.concatenate((self.__blocks_array, self.__cursor_array))
