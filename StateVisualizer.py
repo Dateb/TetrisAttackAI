@@ -2,8 +2,6 @@ from copy import copy
 
 from PIL import Image
 
-from StateExtractor import StateExtractor
-
 
 class StateVisualizer:
 

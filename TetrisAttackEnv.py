@@ -28,11 +28,8 @@ class TetrisAttackEnv:
         if done:
             rew = 0
 
-        start = timeit.default_timer()
         board_image = BoardImage(game_image)
         board_configuration = BoardConfiguration(board_image, self.__cursor_locator)
-        stop = timeit.default_timer()
-        print(f"Time to create obs:{stop - start}")
 
         return board_configuration.array, rew, done, info
 
