@@ -1,11 +1,9 @@
-import timeit
-
 import numpy as np
 import retro
 
-from Board.BoardConfiguration import BoardConfiguration
-from Board.BoardImage import BoardImage
-from Board.CursorLocation.CursorLocator import CursorLocator
+from src.Board.BoardConfiguration import BoardConfiguration
+from src.Board.BoardImage import BoardImage
+from src.Board.CursorLocation.CursorLocator import CursorLocator
 
 
 class TetrisAttackEnv:

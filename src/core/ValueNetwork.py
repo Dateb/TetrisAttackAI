@@ -1,7 +1,7 @@
 from keras import Sequential
 from keras.layers import Permute, Flatten, Dense, Activation
 
-from Board.BoardConfiguration import BoardConfiguration
+from src.Board.BoardConfiguration import BoardConfiguration
 
 
 class ValueNetwork:

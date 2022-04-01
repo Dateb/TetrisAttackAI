@@ -4,8 +4,8 @@ from rl.memory import SequentialMemory
 from rl.policy import LinearAnnealedPolicy, EpsGreedyQPolicy
 
 import AgentPersistence
-from core.TetrisAttackEnv import TetrisAttackEnv
-from core.ValueNetwork import ValueNetwork
+from src.core.TetrisAttackEnv import TetrisAttackEnv
+from src.core.ValueNetwork import ValueNetwork
 
 
 class EndlessModeAgent:

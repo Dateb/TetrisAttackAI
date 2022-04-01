@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 from numpy import ndarray
 
-from Board.CursorLocation.CursorFilter import CursorFilter
+from src.Board.CursorLocation.CursorFilter import CursorFilter
 
 
 class CursorLocator:
