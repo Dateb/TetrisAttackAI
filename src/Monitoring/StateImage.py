@@ -1,3 +1,5 @@
+from copy import copy
+
 from PIL import Image
 
 from src.Board.Blocks.BlockPixel import BlockPixel
@@ -8,7 +10,7 @@ from src.Board.BoardImage import BoardImage
 class StateImage:
 
     def __init__(self, board_image: BoardImage, board_configuration: BoardConfiguration):
-        self.__array = board_image.array
+        self.__array = copy(board_image.array)
         self.__board_configuration = board_configuration
         self.__build_state_image()
         self.__image = Image.fromarray(self.__array)
