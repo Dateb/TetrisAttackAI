@@ -4,6 +4,7 @@ import retro
 from src.Board.BoardConfiguration import BoardConfiguration
 from src.Board.BoardImage import BoardImage
 from src.Board.CursorLocation.CursorLocator import CursorLocator
+from src.Monitoring.StateImage import StateImage
 
 
 class TetrisAttackEnv:
@@ -28,6 +29,8 @@ class TetrisAttackEnv:
 
         board_image = BoardImage(game_image)
         board_configuration = BoardConfiguration(board_image, self.__cursor_locator)
+        state_image = StateImage(board_image, board_configuration)
+        state_image.image.save("state.jpeg")
 
         return board_configuration.array, rew, done, info
 

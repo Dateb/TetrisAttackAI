@@ -23,6 +23,10 @@ class BoardImage:
         )
 
     @property
+    def image(self):
+        return self.__image
+
+    @property
     def height(self):
         return self.__image_array.shape[0]
 

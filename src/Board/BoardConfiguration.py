@@ -50,6 +50,10 @@ class BoardConfiguration:
         self.__cursor_array = self.__cursor_array.flatten()
 
     @property
+    def block_pixels(self):
+        return self.__block_pixels
+
+    @property
     def array(self):
         return self.__configuration_array
 
