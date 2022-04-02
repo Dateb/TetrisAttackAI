@@ -1,7 +1,6 @@
 import numpy as np
 
-from src.Board.BlockLocations.Block import Block, BlockType
-from src.Board.BlockLocations.BlockPixel import BlockPixel
+from src.Board.Blocks.BlockPixel import BlockPixel
 from src.Board.BoardImage import BoardImage
 from src.Board.CursorLocation.CursorLocator import CursorLocator
 
@@ -10,7 +9,7 @@ class BoardConfiguration:
 
     BLOCKS_PER_ROW = 6
     BLOCKS_PER_COLUMN = 12
-    N_BLOCK_TYPES = len(BlockType)
+    N_BLOCK_TYPES = 7
 
     CURSOR_SIZE: int = BLOCKS_PER_ROW * BLOCKS_PER_COLUMN
     BLOCKS_SIZE: int = BLOCKS_PER_ROW * BLOCKS_PER_COLUMN * N_BLOCK_TYPES
@@ -26,14 +25,12 @@ class BoardConfiguration:
         self.__configuration_array = np.concatenate((self.__blocks_array, self.__cursor_array))
 
     def __build_blocks_array(self):
-        blocks = [[0 for _ in range(self.BLOCKS_PER_COLUMN)] for _ in range(self.BLOCKS_PER_ROW)]
-        self.__blocks_array = np.zeros((self.BLOCKS_PER_ROW, self.BLOCKS_PER_COLUMN, len(BlockType)))
-        for i in range(self.BLOCKS_PER_ROW):
-            for j in range(self.BLOCKS_PER_COLUMN):
-                block = Block(BlockPixel(self.__board_image, j, i))
-                blocks[i][j] = block
-                self.__blocks_array[i, j, :] = block.array
-        self.__blocks_array = self.__blocks_array.flatten()
+        self.__block_pixels = [
+            BlockPixel(self.__board_image, j, i)
+            for j in range(self.BLOCKS_PER_COLUMN)
+            for i in range(self.BLOCKS_PER_ROW)
+        ]
+        self.__blocks_array = np.concatenate([block_pixel.block.array() for block_pixel in self.__block_pixels])
 
     def __build_cursor_array(self):
         self.__cursor_array = np.zeros((self.BLOCKS_PER_ROW, self.BLOCKS_PER_COLUMN))
