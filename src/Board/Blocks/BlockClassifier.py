@@ -1,4 +1,4 @@
-from src.Board.Blocks.BackGroundBlock import BackGroundBlock
+from src.Board.Blocks.BackgroundBlock import BackGroundBlock
 from src.Board.Blocks.Block import Block
 from src.Board.Blocks.CircleBlock import CircleBlock
 from src.Board.Blocks.DiamondBlock import DiamondBlock

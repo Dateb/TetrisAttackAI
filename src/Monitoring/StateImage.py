@@ -25,6 +25,10 @@ class StateImage:
                 for j in range(-radius, radius):
                     self.__array[y_position + i, x_position + j] = pixel.block.color()
 
+        print(self.__board_configuration.cursor_x_coordinate)
+        self.__array[self.__board_configuration.cursor_y_coordinate, self.__board_configuration.cursor_x_coordinate] \
+            = [255, 255, 255]
+
     @property
     def image(self):
         return self.__image

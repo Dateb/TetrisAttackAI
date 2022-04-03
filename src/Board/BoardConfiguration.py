@@ -35,19 +35,27 @@ class BoardConfiguration:
     def __build_cursor_array(self):
         self.__cursor_array = np.zeros((self.BLOCKS_PER_ROW, self.BLOCKS_PER_COLUMN))
 
-        cursor_x_coordinate, cursor_y_coordinate = self.__cursor_locator.get_coordinates(self.__board_image.array)
-        if cursor_x_coordinate == -1 or cursor_y_coordinate == -1:
+        self.__cursor_x_coordinate, self.__cursor_y_coordinate = self.__cursor_locator.get_coordinates(self.__board_image.grayscale_array)
+        if self.__cursor_x_coordinate == -1 or self.__cursor_y_coordinate == -1:
             self.__cursor_array = self.__cursor_array.flatten()
             return
 
         block_width = self.__board_image.width / self.BLOCKS_PER_ROW
         block_height = self.__board_image.height / self.BLOCKS_PER_COLUMN
 
-        cursor_x_block_position = int(cursor_x_coordinate / block_width)
-        cursor_y_block_position = int(cursor_y_coordinate / block_height)
+        cursor_x_block_position = int(self.__cursor_x_coordinate / block_width)
+        cursor_y_block_position = int(self.__cursor_y_coordinate / block_height)
 
         self.__cursor_array[cursor_x_block_position, cursor_y_block_position] = 1
         self.__cursor_array = self.__cursor_array.flatten()
+
+    @property
+    def cursor_x_coordinate(self):
+        return self.__cursor_x_coordinate
+
+    @property
+    def cursor_y_coordinate(self):
+        return self.__cursor_y_coordinate
 
     @property
     def block_pixels(self):

@@ -17,6 +17,7 @@ class BoardImage:
         self.__suppress_noise()
         self.__image.save("board.jpeg")
         self.__image_array = np.array(self.__image)
+        self.__grayscale_array = np.array(self.__image.convert('L'))
 
     def __crop_board(self):
         self.__image = Image.fromarray(
@@ -37,6 +38,10 @@ class BoardImage:
     @property
     def image(self):
         return self.__image
+
+    @property
+    def grayscale_array(self):
+        return self.__grayscale_array
 
     @property
     def height(self):
