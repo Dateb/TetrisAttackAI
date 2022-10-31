@@ -1,5 +1,6 @@
 import tensorflow as tf
 
+
 class TetrisAttackMonitor:
 
     LOG_FOLDER: str = "log"
@@ -7,7 +8,6 @@ class TetrisAttackMonitor:
     def __init__(self):
         writer = tf.summary.create_file_writer(logdir=self.LOG_FOLDER)
         self.__total_steps = 0
-
 
     def on_step_end(self, step, logs={}):
         self.__total_steps += 1
